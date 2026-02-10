@@ -81,7 +81,7 @@ module.exports = grammar({
     add_instruction: ($) =>
       seq(
         alias(/[aA][dD][dD]/, "ADD"),
-        repeat($.param),
+        repeat(choice($.param, $.flag_param)),
         repeat1(
           seq(alias($.path_with_heredoc, $.path), $._non_newline_whitespace)
         ),
@@ -92,7 +92,7 @@ module.exports = grammar({
     copy_instruction: ($) =>
       seq(
         alias(/[cC][oO][pP][yY]/, "COPY"),
-        repeat($.param),
+        repeat(choice($.param, $.flag_param)),
         repeat1(
           seq(alias($.path_with_heredoc, $.path), $._non_newline_whitespace)
         ),
@@ -339,6 +339,13 @@ module.exports = grammar({
         field("name", token.immediate(/[a-z][-a-z]*/)),
         token.immediate("="),
         field("value", token.immediate(/[^\s]+/))
+      ),
+
+    // Boolean flag with no value (e.g. --link, --parents for COPY/ADD).
+    flag_param: () =>
+      seq(
+        "--",
+        field("name", token.immediate(/[a-z][-a-z]*/))
       ),
 
     // Specific parsing of the --mount option e.g.
