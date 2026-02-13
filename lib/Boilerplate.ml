@@ -1085,7 +1085,8 @@ let map_source_file (env : env) (xs : CST.source_file) =
   ) xs)
 
 let map_comment (env : env) (tok : CST.comment) =
-  (* pattern #.* *) token env tok
+  (* pattern #[^\\\n]*(?:\\.[^\\\n]*\
+  )* *) token env tok
 
 let map_line_continuation (env : env) (tok : CST.line_continuation) =
   (* pattern \\[ \t]*\n *) token env tok

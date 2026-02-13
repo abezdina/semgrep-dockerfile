@@ -541,7 +541,9 @@ and onbuild_instruction = (pat_onbu * instruction)
 
 type source_file = (instruction * Token.t (* "\n" *)) list (* zero or more *)
 
-type comment (* inlined *) = Token.t (* pattern #.* *)
+type comment (* inlined *) =
+  Token.t (* pattern #[^\\\n]*(?:\\.[^\\\n]*
+  )* *)
 
 type line_continuation (* inlined *) = Token.t (* pattern \\[ \t]*\n *)
 

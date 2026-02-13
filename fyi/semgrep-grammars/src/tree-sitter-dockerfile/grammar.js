@@ -493,6 +493,6 @@ module.exports = grammar({
 
     _non_newline_whitespace: () => token.immediate(/[\t ]+/),
 
-    comment: () => /#.*/,
+    comment: () => /#[^\\\n]*(?:\\.[^\\\n]*)*/,
   },
 });
